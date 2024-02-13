@@ -11,4 +11,9 @@ class Company extends Model
     use HasFactory, Userstamps;
 
     protected $guarded = ['id'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

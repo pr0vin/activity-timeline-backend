@@ -30,6 +30,8 @@ class UpdateCompanyRequest extends FormRequest
             'district' => 'required',
             'municipality' => 'required',
             'address' => 'nullable',
+            'website' => 'nullable',
+            'description' => 'nullable',
         ];
     }
 }

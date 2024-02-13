@@ -27,9 +27,7 @@ class CompanyController extends Controller
 
         $data = $request->validated();
 
-        $company = Company::create(array_merge($data, [
-            'user_id' => Auth::user()->id,
-        ]));
+        $company = Company::create($data);
 
 
         return response()->json([

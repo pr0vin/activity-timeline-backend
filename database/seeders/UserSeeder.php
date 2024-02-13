@@ -17,25 +17,26 @@ class UserSeeder extends Seeder
         $roles = Role::create(['name' => 'Super-Admin']);
         $user = User::create([
             'name' => 'Super admin',
+            'company_id' => 1,
             'email' => 'superadmin@gmail.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ]);
         $user->assignRole($roles);
 
-        $roles = Role::create(['name' => 'admin']);
-        $user = User::create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        ]);
-        $user->assignRole($roles);
+        // $roles = Role::create(['name' => 'admin']);
+        // $user = User::create([
+        //     'name' => 'admin',
+        //     'email' => 'admin@gmail.com',
+        //     'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        // ]);
+        // $user->assignRole($roles);
 
-        $roles = Role::create(['name' => 'user']);
-        $user = User::create([
-            'name' => 'user',
-            'email' => 'user@gmail.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        ]);
-        $user->assignRole($roles);
+        // $roles = Role::create(['name' => 'user']);
+        // $user = User::create([
+        //     'name' => 'user',
+        //     'email' => 'user@gmail.com',
+        //     'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        // ]);
+        // $user->assignRole($roles);
     }
 }
