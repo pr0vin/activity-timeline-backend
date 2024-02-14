@@ -27,6 +27,11 @@ class FiscalYearController extends Controller
         //
         $data = $request->validated();
 
+        // return $data;
+        if ($data['status'] == true) {
+            FiscalYear::where('status', true)->update(['status' => false]);
+        }
+
         $fiscalyear = FiscalYear::create($data);
 
         return response()->json([
@@ -51,6 +56,10 @@ class FiscalYearController extends Controller
         //
 
         $data = $request->Validated();
+
+        if ($data['status'] == true) {
+            FiscalYear::where('status', true)->update(['status' => false]);
+        }
 
         $fiscalYear->update($data);
         return response()->json([

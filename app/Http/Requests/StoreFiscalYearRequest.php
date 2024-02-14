@@ -27,6 +27,7 @@ class StoreFiscalYearRequest extends FormRequest
             'year' => 'required',
             'startDate' => 'required',
             'endDate' => 'required',
+            'status' => 'required',
         ];
     }
 }
