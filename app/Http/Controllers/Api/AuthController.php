@@ -22,6 +22,8 @@ class AuthController extends Controller
         try {
             //Validated
             $validateUser = Validator::make($request->all(), [
+                'role' => 'required',
+                'company_id' => 'required',
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required',
@@ -39,11 +41,13 @@ class AuthController extends Controller
             }
 
             $user = User::create([
+                'company_id' => $request->company_id,
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-            $user->syncRoles('user');
+
+            $user->syncRoles($request->role);
 
             return response()->json(
                 [
@@ -125,7 +129,11 @@ class AuthController extends Controller
 
     public function user()
     {
-        $user = User::with('roles', 'companies')->findOrfail(Auth::user()->id);
+
+
+        $user = User::with('roles', 'company')->findOrfail(Auth::user()->id);
+
+
         return response()->json(
             [
                 'status' => true,

@@ -18,6 +18,11 @@ return new class extends Migration
                 ->constrained('fiscal_years')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table
+                ->foreignId('company_id')
+                ->constrained('companies')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->string('title');
             $table->string('content');
             $table->enum('status', ['done', 'notDone', 'postponed', 'canceled'])->default('notDone');

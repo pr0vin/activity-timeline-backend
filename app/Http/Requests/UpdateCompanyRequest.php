@@ -23,6 +23,7 @@ class UpdateCompanyRequest extends FormRequest
     {
         return [
             'logo' => 'nullable',
+            'subLogo' => 'nullable',
             'name' => "required",
             'email' => 'nullable',
             'contact' => 'nullable',
@@ -32,6 +33,7 @@ class UpdateCompanyRequest extends FormRequest
             'address' => 'nullable',
             'website' => 'nullable',
             'description' => 'nullable',
+
         ];
     }
 }

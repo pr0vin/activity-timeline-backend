@@ -26,6 +26,7 @@ Route::get('/home', function () {
 
 Route::post('register', [AuthController::class, 'create']);
 Route::post('login', [AuthController::class, 'login']);
+Route::get('user', [CompanyController::class, 'user'])->middleware('auth:sanctum');
 
 Route::apiResource('fiscal-years', FiscalYearController::class);
 Route::apiResource('companies', CompanyController::class)->middleware('auth:sanctum');
@@ -33,6 +34,6 @@ Route::apiResource('categories', CategoryController::class)->middleware('auth:sa
 Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
 Route::apiResource('tasks', TaskController::class)->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

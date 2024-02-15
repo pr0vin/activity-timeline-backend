@@ -23,6 +23,7 @@ class StoreCompanyRequest extends FormRequest
     {
         return [
             'logo' => 'nullable',
+            'subLogo' => 'nullable',
             'name' => "required",
             'email' => 'nullable',
             'contact' => 'nullable',
