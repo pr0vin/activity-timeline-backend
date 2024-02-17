@@ -27,6 +27,7 @@ class UpdateEventRequest extends FormRequest
             'content' => 'required',
             'fiscal_year_id' => 'required',
             'status' => 'required',
+            'date' => 'required',
         ];
     }
 }

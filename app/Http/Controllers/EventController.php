@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\FiscalYear;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -14,7 +16,8 @@ class EventController extends Controller
     public function index()
     {
         //
-        $events = Event::latest()->get();
+
+        $events = Event::with('categories', 'company', 'fiscalYear')->where('company_id', Auth::user()->company_id)->latest()->get();
         return $events;
     }
 
@@ -25,8 +28,16 @@ class EventController extends Controller
     {
         //
 
+
         $data = $request->validated();
-        $event = Event::create($data);
+
+        $user = Auth::user();
+        // return $user->company_id;
+
+        $event = Event::create(array_merge($data, [
+            'company_id' => $user->company_id,
+        ]));;
+
 
         if ($request->has('categories')) {
             $event->categories()->attach($request->categories);
@@ -44,6 +55,7 @@ class EventController extends Controller
     public function show(Event $event)
     {
         //
+        $event->load('categories', 'tasks');
         return  $event;
     }
 
@@ -53,8 +65,14 @@ class EventController extends Controller
     public function update(UpdateEventRequest $request, Event $event)
     {
         //
+
+
         $data = $request->validated();
+
         $event->update($data);
+        if ($request->has('categories')) {
+            $event->categories()->sync($request->categories);
+        }
 
         return response()->json([
             'message' => "Updated Successfully"
@@ -69,6 +87,7 @@ class EventController extends Controller
         //
 
         $event->delete();
+        $event->categories()->detach();
 
         return response()->json([
             'message' => "Deleted Successfully"

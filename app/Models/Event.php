@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Wildside\Userstamps\Userstamps;
 
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $guarded = ['id'];
 
@@ -19,5 +20,13 @@ class Event extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function fiscalYear()
+    {
+        return $this->belongsTo(FiscalYear::class);
     }
 }

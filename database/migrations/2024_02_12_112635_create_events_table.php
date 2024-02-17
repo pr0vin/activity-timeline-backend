@@ -25,6 +25,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('title');
             $table->string('content');
+            $table->string('date');
             $table->enum('status', ['done', 'notDone', 'postponed', 'canceled'])->default('notDone');
 
 

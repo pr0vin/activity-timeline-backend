@@ -11,4 +11,10 @@ class FiscalYear extends Model
     use HasFactory, Userstamps;
 
     protected $guarded = ['id'];
+
+
+    public function events()
+    {
+        $this->hasMany(Event::class);
+    }
 }

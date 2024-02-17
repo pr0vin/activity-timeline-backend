@@ -33,6 +33,7 @@ Route::apiResource('companies', CompanyController::class)->middleware('auth:sanc
 Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');
 Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
 Route::apiResource('tasks', TaskController::class)->middleware('auth:sanctum');
+// Route::apiResource('get-tasks/{event}/', [TaskController::class, 'getTasks'])->middleware('auth:sanctum');
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

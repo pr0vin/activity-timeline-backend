@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Event;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
@@ -53,6 +54,8 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         //
+
+
         $data = $request->validated();
 
         if ($request->file('documents')) {
@@ -82,5 +85,11 @@ class TaskController extends Controller
         return response()->json([
             'message' => "Successfully Deleted"
         ]);
+    }
+
+    public function getTasks(Request $request)
+    {
+        $tasks = Task::where('event_id', $request->event_id)->latest()->get();
+        return $tasks;
     }
 }
