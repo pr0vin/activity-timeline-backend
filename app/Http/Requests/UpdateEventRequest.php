@@ -28,6 +28,8 @@ class UpdateEventRequest extends FormRequest
             'fiscal_year_id' => 'required',
             'status' => 'required',
             'date' => 'required',
+            'time' => 'nullable',
+            'assignTo' => 'nullable',
         ];
     }
 }

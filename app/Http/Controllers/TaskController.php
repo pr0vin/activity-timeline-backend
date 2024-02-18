@@ -35,6 +35,7 @@ class TaskController extends Controller
         }
         $task = Task::create($data);
         return response()->json([
+            'task' => $task,
             'message' => "Successfully created"
         ]);
     }

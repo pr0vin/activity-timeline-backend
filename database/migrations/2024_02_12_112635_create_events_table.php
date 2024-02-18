@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('content');
             $table->string('date');
+            $table->string('time')->nullable();
+            $table->string('assignTo')->nullable();
             $table->enum('status', ['done', 'notDone', 'postponed', 'canceled'])->default('notDone');
 
 

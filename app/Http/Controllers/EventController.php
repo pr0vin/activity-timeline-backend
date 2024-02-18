@@ -17,7 +17,7 @@ class EventController extends Controller
     {
         //
 
-        $events = Event::with('categories', 'company', 'fiscalYear')->where('company_id', Auth::user()->company_id)->latest()->get();
+        $events = Event::with('categories', 'company', 'fiscalYear', 'tasks')->where('company_id', Auth::user()->company_id)->latest()->get();
         return $events;
     }
 

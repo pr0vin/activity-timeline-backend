@@ -28,6 +28,8 @@ class StoreEventRequest extends FormRequest
             'fiscal_year_id' => 'required',
             // 'status' => 'nullable',
             'date' => 'required',
+            'time' => 'nullable',
+            'assignTo' => 'nullable',
 
         ];
     }
