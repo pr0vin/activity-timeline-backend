@@ -142,4 +142,18 @@ class AuthController extends Controller
             200,
         );
     }
+
+    public function changePassword(Request $request)
+    {
+
+
+        $user = User::find(Auth::user()->id);
+        $user->password = Hash::make($request->password);
+        $user->update();
+
+
+        return response()->json([
+            'message' => 'Password Changed Successfully'
+        ]);
+    }
 }

@@ -27,10 +27,14 @@ Route::get('/home', function () {
 Route::post('register', [AuthController::class, 'create']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('user', [CompanyController::class, 'user'])->middleware('auth:sanctum');
+// Route::get('/categories', [CategoryController::class, 'index']);
 
-Route::apiResource('fiscal-years', FiscalYearController::class);
-Route::apiResource('companies', CompanyController::class)->middleware('auth:sanctum');
-Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('fiscal-years', FiscalYearController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('companies', CompanyController::class);
+});
+// Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');
 Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
 Route::apiResource('tasks', TaskController::class)->middleware('auth:sanctum');
 // Route::apiResource('get-tasks/{event}/', [TaskController::class, 'getTasks'])->middleware('auth:sanctum');
