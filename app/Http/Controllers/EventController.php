@@ -6,6 +6,8 @@ use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\FiscalYear;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
@@ -84,6 +86,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+
         //
 
         $event->delete();
@@ -92,5 +95,41 @@ class EventController extends Controller
         return response()->json([
             'message' => "Deleted Successfully"
         ]);
+    }
+
+    public function copyEvents(Request $request)
+    {
+
+        $destinationCompanyIds = [];
+        $sourceFiscalYearId = $request->source_id;
+        $targetFiscalYearId = $request->target_id;
+        // Retrieve data associated with the source fiscal year
+        $events = Event::with('tasks')->where('fiscal_year_id', $sourceFiscalYearId)->get();
+        return $events;
+
+        foreach ($events as $event) {
+            // Create a new event associated with the target fiscal year
+            foreach ($destinationCompanyIds as $destinationCompanyId) {
+                $newEvent = $event->replicate();
+                $newEvent->fiscal_year_id = $targetFiscalYearId;
+                $newEvent->date = Carbon::parse($event->date)->addYear();
+                $newEvent->company_id = $destinationCompanyId;
+                $newEvent->save();
+
+                // Optionally, duplicate associated tasks
+                $tasks = $event->tasks;
+                foreach ($tasks as $task) {
+                    // Create a new task associated with the new event
+                    $newTask = $task->replicate();
+                    $newTask->event_id = $newEvent->id;
+                    $newTask->documents = null;
+                    $newTask->save();
+                }
+            }
+        }
+
+        // Optionally, handle other related data
+
+        return response()->json(['message' => 'Data copied successfully']);
     }
 }
