@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\Company;
 use App\Models\FiscalYear;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -100,12 +101,14 @@ class EventController extends Controller
     public function copyEvents(Request $request)
     {
 
-        $destinationCompanyIds = [];
-        $sourceFiscalYearId = $request->source_id;
-        $targetFiscalYearId = $request->target_id;
+
+
+        $destinationCompanyIds = $request->target_companies;
+        $sourceFiscalYearId = $request->from_fiscal_year;
+        $targetFiscalYearId = $request->to_fiscal_year;
         // Retrieve data associated with the source fiscal year
-        $events = Event::with('tasks')->where('fiscal_year_id', $sourceFiscalYearId)->get();
-        return $events;
+        $sourceCompany = Company::find(Auth::user()->company_id);
+        $events = Event::with('tasks', 'categories')->where('company_id', $sourceCompany->id)->where('fiscal_year_id', $sourceFiscalYearId)->get();
 
         foreach ($events as $event) {
             // Create a new event associated with the target fiscal year
@@ -115,6 +118,15 @@ class EventController extends Controller
                 $newEvent->date = Carbon::parse($event->date)->addYear();
                 $newEvent->company_id = $destinationCompanyId;
                 $newEvent->save();
+
+                // categories
+
+                $categories = $event->categories;
+                foreach ($categories as $category) {
+                    $newCategories = $category->replicate();
+                    $newCategories->save();
+                }
+
 
                 // Optionally, duplicate associated tasks
                 $tasks = $event->tasks;
