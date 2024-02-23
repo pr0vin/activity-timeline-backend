@@ -71,6 +71,7 @@ class TaskController extends Controller
         $task->update($data);
 
         return response()->json([
+            'task' => $task,
             'message' => "Successfully updated task"
         ]);
     }
@@ -84,6 +85,7 @@ class TaskController extends Controller
 
         $task->delete();
         return response()->json([
+            'task' => $task,
             'message' => "Successfully Deleted"
         ]);
     }

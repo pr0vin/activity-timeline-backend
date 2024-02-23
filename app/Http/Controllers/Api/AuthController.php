@@ -147,8 +147,13 @@ class AuthController extends Controller
     {
 
 
+
+        $data = $request->validate([
+            'password' => 'required',
+        ]);
+        $newpassword = Hash::make($data['password']);
         $user = User::find(Auth::user()->id);
-        $user->password = Hash::make($request->password);
+        $user->password = $newpassword;
         $user->update();
 
 

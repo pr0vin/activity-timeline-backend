@@ -27,6 +27,7 @@ Route::get('/home', function () {
 Route::post('register', [AuthController::class, 'create']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('user', [CompanyController::class, 'user'])->middleware('auth:sanctum');
+Route::post('change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
 // Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {

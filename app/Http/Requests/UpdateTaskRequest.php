@@ -23,7 +23,7 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             //
-            // 'name' => 'required',
+            'name' => 'required',
             'documents' => 'nullable',
             'event_id' => 'required',
         ];
