@@ -31,6 +31,7 @@ Route::post('change-password', [AuthController::class, 'changePassword'])->middl
 // Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::post('copy-events', [EventController::class, 'copyEvents'])->middleware('auth:sanctum');
+Route::post('copy-my-events', [EventController::class, 'copyMyEvents'])->middleware('auth:sanctum');
 
 
 Route::middleware(['auth:sanctum'])->group(function () {

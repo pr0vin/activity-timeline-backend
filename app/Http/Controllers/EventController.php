@@ -120,12 +120,7 @@ class EventController extends Controller
                 $newEvent->save();
 
                 // categories
-
-                $categories = $event->categories;
-                foreach ($categories as $category) {
-                    $newCategories = $category->replicate();
-                    $newCategories->save();
-                }
+                $newEvent->categories()->attach($event->categories->pluck('id')->toArray());
 
 
                 // Optionally, duplicate associated tasks
@@ -143,5 +138,38 @@ class EventController extends Controller
         // Optionally, handle other related data
 
         return response()->json(['message' => 'Data copied successfully']);
+    }
+
+    public function copyMyEvents(Request $request)
+    {
+
+        $sourceFiscalYearId = $request->from_fiscal_year;
+        $targetFiscalYearId = $request->to_fiscal_year;
+        // Retrieve data associated with the source fiscal year
+        $sourceCompany = Company::find(Auth::user()->company_id);
+        $events = Event::with('tasks', 'categories')->where('company_id', $sourceCompany->id)->where('fiscal_year_id', $sourceFiscalYearId)->get();
+
+        foreach ($events as $event) {
+            // Create a new event associated with the target fiscal year
+            $newEvent = $event->replicate();
+            $newEvent->fiscal_year_id = $targetFiscalYearId;
+            $newEvent->date = Carbon::parse($event->date)->addYear();
+            $newEvent->company_id = $sourceCompany->id;
+            $newEvent->save();
+
+            // categories
+            $newEvent->categories()->attach($event->categories->pluck('id')->toArray());
+
+
+            // Optionally, duplicate associated tasks
+            $tasks = $event->tasks;
+            foreach ($tasks as $task) {
+                // Create a new task associated with the new event
+                $newTask = $task->replicate();
+                $newTask->event_id = $newEvent->id;
+                $newTask->documents = null;
+                $newTask->save();
+            }
+        }
     }
 }
