@@ -115,7 +115,7 @@ class EventController extends Controller
             foreach ($destinationCompanyIds as $destinationCompanyId) {
                 $newEvent = $event->replicate();
                 $newEvent->fiscal_year_id = $targetFiscalYearId;
-                $newEvent->date = Carbon::parse($event->date)->addYear();
+                // $newEvent->date = Carbon::parse($event->date)->addYear();
                 $newEvent->company_id = $destinationCompanyId;
                 $newEvent->save();
 
@@ -154,7 +154,7 @@ class EventController extends Controller
             $newEvent = $event->replicate();
             $newEvent->fiscal_year_id = $targetFiscalYearId;
             $newEvent->date = Carbon::parse($event->date)->addYear();
-            $newEvent->company_id = $sourceCompany->id;
+            // $newEvent->company_id = $sourceCompany->id;
             $newEvent->save();
 
             // categories
