@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::latest()->get();
+        $categories = Category::orderBy('order')->get();
 
         return $categories;
     }
@@ -67,5 +68,16 @@ class CategoryController extends Controller
         return response()->json([
             'message' => "Deleted Successfully"
         ]);
+    }
+
+    public function orderCategory(Request $request)
+    {
+
+        $orderedCategories = $request->categoryOrder;
+        foreach ($orderedCategories as $order => $categoryId) {
+            Category::where('id', $categoryId)->update(['order' => $order]);
+        }
+
+        return response()->json(['message' => 'Order of categories saved successfully']);
     }
 }

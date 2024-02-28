@@ -6,6 +6,7 @@ use App\Models\FiscalYear;
 use App\Http\Requests\StoreFiscalYearRequest;
 use App\Http\Requests\UpdateFiscalYearRequest;
 use Illuminate\Auth\Events\Validated;
+use Illuminate\Http\Request;
 
 class FiscalYearController extends Controller
 {
@@ -14,7 +15,7 @@ class FiscalYearController extends Controller
      */
     public function index()
     {
-        $fiscalyears = FiscalYear::latest()->get();
+        $fiscalyears = FiscalYear::orderBy('order')->get();
 
         return $fiscalyears;
     }
@@ -78,5 +79,25 @@ class FiscalYearController extends Controller
         return response()->json([
             'message' => "Successfully deleted"
         ]);
+    }
+
+    public function activeFiscalYear()
+    {
+
+        $fiscalYear = FiscalYear::where('status', true)->first();
+        return response()->json([
+            'activeYear' => $fiscalYear
+        ]);
+    }
+
+    public function orderFiscalYears(Request $request)
+    {
+
+        $orderedFiscalYears = $request->fiscalYearOrder;
+        foreach ($orderedFiscalYears as $order => $fyId) {
+            FiscalYear::where('id', $fyId)->update(['order' => $order]);
+        }
+
+        return response()->json(['message' => 'Order of fiscalYears saved successfully']);
     }
 }

@@ -48,7 +48,7 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
 
-        return $company;
+        return $company->load('users');
     }
 
     /**

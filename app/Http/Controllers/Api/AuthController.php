@@ -161,4 +161,23 @@ class AuthController extends Controller
             'message' => 'Password Changed Successfully'
         ]);
     }
+
+    public function changeUsersPassword(Request $request, User $user)
+    {
+
+
+
+        $data = $request->validate([
+            'password' => 'required',
+        ]);
+
+        $newpassword = Hash::make($data['password']);
+        $user->password = $newpassword;
+        $user->update();
+
+
+        return response()->json([
+            'message' => 'Password Changed Successfully'
+        ]);
+    }
 }

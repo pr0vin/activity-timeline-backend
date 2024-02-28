@@ -28,6 +28,7 @@ Route::post('register', [AuthController::class, 'create']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('user', [CompanyController::class, 'user'])->middleware('auth:sanctum');
 Route::post('change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
+Route::put('change-user-password/{user}', [AuthController::class, 'changeUsersPassword'])->middleware('auth:sanctum');
 // Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::post('copy-events', [EventController::class, 'copyEvents'])->middleware('auth:sanctum');
@@ -36,7 +37,11 @@ Route::post('copy-my-events', [EventController::class, 'copyMyEvents'])->middlew
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('fiscal-years', FiscalYearController::class);
+    Route::get('active-year', [FiscalYearController::class, 'activeFiscalYear']);
+    Route::put('order-fiscal-years', [FiscalYearController::class, 'orderFiscalYears']);
+
     Route::apiResource('categories', CategoryController::class);
+    Route::put('order-categories', [CategoryController::class, 'orderCategory']);
     Route::apiResource('companies', CompanyController::class);
 });
 // Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');

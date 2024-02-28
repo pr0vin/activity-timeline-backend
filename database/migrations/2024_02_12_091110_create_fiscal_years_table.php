@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('year');
             $table->string('startDate');
             $table->string('endDate');
+            $table->integer('order')->nullable();
             $table->boolean('status')->default(false);
 
 
