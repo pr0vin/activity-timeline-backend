@@ -98,9 +98,16 @@ class EventController extends Controller
         ]);
     }
 
+    public function getPaginateEvent(Request $request)
+    {
+        //
+        $perPage = $request->input('per_page', 10);
+        $events = Event::with('categories', 'company', 'fiscalYear', 'tasks')->where('company_id', Auth::user()->company_id)->paginate($perPage);
+        return $events;
+    }
+
     public function copyEvents(Request $request)
     {
-
 
 
         $destinationCompanyIds = $request->target_companies;
@@ -142,6 +149,7 @@ class EventController extends Controller
 
     public function copyMyEvents(Request $request)
     {
+
 
         $sourceFiscalYearId = $request->from_fiscal_year;
         $targetFiscalYearId = $request->to_fiscal_year;
