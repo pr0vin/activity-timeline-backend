@@ -6,6 +6,8 @@ use App\Models\Company;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -118,5 +120,25 @@ class CompanyController extends Controller
             ],
             200,
         );
+    }
+
+    public function renew(Request $request, Company $company)
+    {
+
+        $expiryDate = Carbon::parse($company->expiry_date);
+        if ($expiryDate->isPast()) {
+            // Add one year to the expiry date
+            $company->expiry_date = $expiryDate->addYear();
+            $company->status = true;
+            $company->save();
+
+            return response()->json([
+                'message' => 'Successfully renewed'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Something went wrong'
+            ]);
+        }
     }
 }

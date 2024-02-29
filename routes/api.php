@@ -29,6 +29,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('user', [CompanyController::class, 'user'])->middleware('auth:sanctum');
 Route::post('change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
 Route::put('change-user-password/{user}', [AuthController::class, 'changeUsersPassword'])->middleware('auth:sanctum');
+Route::post('/companies/{company}/renew', [CompanyController::class, 'renew'])->name('companies.renew');
 // Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::post('copy-events', [EventController::class, 'copyEvents'])->middleware('auth:sanctum');
