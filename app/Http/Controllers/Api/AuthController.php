@@ -180,4 +180,11 @@ class AuthController extends Controller
             'message' => 'Password Changed Successfully'
         ]);
     }
+
+
+    public function allUsers()
+    {
+        $users = User::all();
+        return $users;
+    }
 }
