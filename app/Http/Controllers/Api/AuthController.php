@@ -184,7 +184,7 @@ class AuthController extends Controller
 
     public function allUsers()
     {
-        $users = User::all();
+        $users = User::with('company', 'roles')->latest()->get();
         return $users;
     }
 }

@@ -26,6 +26,7 @@ class StoreEventRequest extends FormRequest
             'title' => 'required',
             'content' => 'required',
             'fiscal_year_id' => 'required',
+            'ad_date' => 'required',
             // 'status' => 'nullable',
             'date' => 'required',
             'time' => 'nullable',
