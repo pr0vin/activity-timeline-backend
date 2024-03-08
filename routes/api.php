@@ -35,6 +35,8 @@ Route::post('/companies/{company}/renew', [CompanyController::class, 'renew'])->
 
 Route::post('copy-events', [EventController::class, 'copyEvents'])->middleware('auth:sanctum');
 Route::post('copy-my-events', [EventController::class, 'copyMyEvents'])->middleware('auth:sanctum');
+Route::post('copy-selected-events', [EventController::class, 'copySelectedEvents'])->middleware('auth:sanctum');
+Route::post('dublicate-events', [EventController::class, 'dublicateEvents'])->middleware('auth:sanctum');
 
 
 Route::middleware(['auth:sanctum'])->group(function () {

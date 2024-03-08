@@ -18,6 +18,12 @@ class EventFactory extends Factory
     {
         return [
             //
+            'title' => $this->faker->title,
+            'content' => $this->faker->content,
+            'date' => $this->faker->date,
+            'category'
+            // hashed password "password"
+
         ];
     }
 }

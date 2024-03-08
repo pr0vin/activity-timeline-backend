@@ -180,4 +180,90 @@ class EventController extends Controller
             }
         }
     }
+
+
+    public function copySelectedEvents(Request $request)
+    {
+
+        // Retrieve input parameters
+        $destinationCompanyIds = $request->target_companies;
+        $targetEventIds = $request->target_events;
+
+        // Retrieve data associated with the source company
+        $sourceCompany = Company::find(Auth::user()->company_id);
+
+        // Retrieve events based on the target event IDs
+        $events = Event::with('tasks', 'categories')
+            ->whereIn('id', $targetEventIds)
+            ->where('company_id', $sourceCompany->id)
+            ->get();
+
+        // Iterate over each event
+        foreach ($events as $event) {
+            // Duplicate the event for each destination company
+            foreach ($destinationCompanyIds as $destinationCompanyId) {
+                $newEvent = $event->replicate(); // Create a replica of the event
+                $newEvent->company_id = $destinationCompanyId; // Update company ID
+                $newEvent->save(); // Save the replicated event
+
+                // Duplicate associated categories
+                $newEvent->categories()->attach($event->categories->pluck('id')->toArray());
+
+                // Optionally, duplicate associated tasks
+                if ($event->tasks->isNotEmpty()) {
+                    foreach ($event->tasks as $task) {
+                        $newTask = $task->replicate(); // Create a replica of the task
+                        $newTask->event_id = $newEvent->id; // Update event ID
+                        $newTask->documents = null; // Clear documents (if needed)
+                        $newTask->save(); // Save the replicated task
+                    }
+                }
+            }
+        }
+
+
+        // Optionally, handle other related data
+
+        return response()->json(['message' => 'Data copied successfully']);
+    }
+    public function dublicateEvents(Request $request)
+    {
+
+
+        $targetEventIds = $request->target_events;
+
+        // Retrieve data associated with the source company
+        $sourceCompany = Company::find(Auth::user()->company_id);
+
+        // Retrieve events based on the target event IDs
+        $events = Event::with('tasks', 'categories')
+            ->whereIn('id', $targetEventIds)
+            ->where('company_id', $sourceCompany->id)
+            ->get();
+
+        // Iterate over each event
+        foreach ($events as $event) {
+
+            $newEvent = $event->replicate();
+            $newEvent->save();
+
+            // Duplicate associated categories
+            $newEvent->categories()->attach($event->categories->pluck('id')->toArray());
+
+            // Optionally, duplicate associated tasks
+            if ($event->tasks->isNotEmpty()) {
+                foreach ($event->tasks as $task) {
+                    $newTask = $task->replicate();
+                    $newTask->event_id = $newEvent->id; // Update event ID
+                    $newTask->documents = null; // Clear documents (if needed)
+                    $newTask->save(); // Save the replicated task
+                }
+            }
+        }
+
+
+        // Optionally, handle other related data
+
+        return response()->json(['message' => 'Data copied successfully']);
+    }
 }
