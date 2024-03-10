@@ -16,8 +16,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
         $tasks = Task::latest()->get();
+
+        // TODO::using API resources makes it easy when we need to have conditional data or transform then
+        // Check out: https://laravel.com/docs/10.x/eloquent-resources#main-content
         return $tasks;
     }
 
@@ -26,14 +28,14 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
-
         $data = $request->validated();
 
-        if ($request->file('documents')) {
-            $data['documents'] = Storage::putFile('task-documents', $request->file('documents'));
+        if ($request->hasFile('documents')) {
+            $data['documents'] = Storage::disk('s3')->putFile('task-documents', $request->file('documents'));
         }
+
         $task = Task::create($data);
+
         return response()->json([
             'task' => $task,
             'message' => "Successfully created"
@@ -45,7 +47,6 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
         return $task;
     }
 
@@ -54,17 +55,14 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
-
-
         $data = $request->validated();
 
         if ($request->file('documents')) {
 
             if ($task->documents) {
-                Storage::delete($task->documents);
+                Storage::disk('s3')->delete($task->documents);
             }
-            $data['documents'] = Storage::putFile('task-documents', $request->file('documents'));
+            $data['documents'] = Storage::disk('s3')->putFile('task-documents', $request->file('documents'));
         } else {
             $data['documents'] = $task->documents;
         }
@@ -93,6 +91,13 @@ class TaskController extends Controller
     public function getTasks(Request $request)
     {
         $tasks = Task::where('event_id', $request->event_id)->latest()->get();
+
+        // TODO::refactor this to API resource
+        $tasks->map(function ($task) {
+            $task->documents = $task->documentUrl();
+            return $task;
+        });
+        
         return $tasks;
     }
 }

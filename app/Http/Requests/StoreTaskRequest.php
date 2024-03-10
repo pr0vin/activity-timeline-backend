@@ -25,7 +25,7 @@ class StoreTaskRequest extends FormRequest
             //
 
             'name' => 'required',
-            'docunemts' => 'nullable',
+            'docunemts' => 'nullable', // TODO::type
             'event_id' => 'required',
         ];
     }
