@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FiscalYear;
 use App\Http\Requests\StoreFiscalYearRequest;
 use App\Http\Requests\UpdateFiscalYearRequest;
+use App\Http\Resources\FiscalYearResource;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class FiscalYearController extends Controller
     {
         $fiscalyears = FiscalYear::orderBy('order')->get();
 
-        return $fiscalyears;
+        return FiscalYearResource::collection($fiscalyears);
     }
 
     /**
@@ -46,7 +47,9 @@ class FiscalYearController extends Controller
     public function show(FiscalYear $fiscalYear)
     {
         //
-        return $fiscalYear;
+
+        $fy = new FiscalYearResource($fiscalYear);
+        return $fy;
     }
 
     /**

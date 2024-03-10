@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,7 @@ class TaskController extends Controller
 
         // TODO::using API resources makes it easy when we need to have conditional data or transform then
         // Check out: https://laravel.com/docs/10.x/eloquent-resources#main-content
-        return $tasks;
+        return TaskResource::collection($tasks);
     }
 
     /**
@@ -47,7 +48,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return $task;
+
+        return new TaskResource($task);
     }
 
     /**
@@ -97,7 +99,7 @@ class TaskController extends Controller
             $task->documents = $task->documentUrl();
             return $task;
         });
-        
+
         return $tasks;
     }
 }

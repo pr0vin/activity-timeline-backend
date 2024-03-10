@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -17,7 +18,7 @@ class CategoryController extends Controller
         //
         $categories = Category::orderBy('order')->get();
 
-        return $categories;
+        return  CategoryResource::collection($categories);
     }
 
     /**
@@ -41,7 +42,9 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         //
-        return $category;
+
+        $cat = new CategoryResource($category);
+        return $cat;
     }
 
     /**

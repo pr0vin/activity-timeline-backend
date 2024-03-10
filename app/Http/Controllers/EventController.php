@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Http\Resources\EventResource;
 use App\Models\Company;
 use App\Models\FiscalYear;
 use Carbon\Carbon;
@@ -21,7 +22,9 @@ class EventController extends Controller
         //
 
         $events = Event::with('categories', 'company', 'fiscalYear', 'tasks')->where('company_id', Auth::user()->company_id)->latest()->get();
-        return $events;
+
+
+        return EventResource::collection($events);
     }
 
     /**
@@ -59,7 +62,7 @@ class EventController extends Controller
     {
         //
         $event->load('categories', 'tasks');
-        return  $event;
+        return  new EventResource($event);
     }
 
     /**
