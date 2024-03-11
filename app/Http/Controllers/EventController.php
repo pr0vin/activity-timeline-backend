@@ -30,11 +30,13 @@ class EventController extends Controller
             $query->where('fiscal_year_id', $activeFiscalYearId);
         }
         if (Auth::check()) {
-            $query->where('company_id', Auth::user()->company_id);
+            $query->where('company_id', Auth::user()->company_id)->orderBy('ad_date');
         }
 
 
-        $events = $query->paginate(10);
+        $events = $query->orderBy('ad_date')->get();
+
+
         return EventResource::collection($events);
     }
 
