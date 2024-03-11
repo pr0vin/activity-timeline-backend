@@ -20,10 +20,21 @@ class EventController extends Controller
     public function index()
     {
         //
+        $activeFiscalYearId = request()->input('fiscal_year_id');
+        // $events = Event::with('categories', 'company', 'fiscalYear', 'tasks')->where('company_id', Auth::user()->company_id)->latest()->get();
 
-        $events = Event::with('categories', 'company', 'fiscalYear', 'tasks')->where('company_id', Auth::user()->company_id)->latest()->get();
+        $query = Event::query()->with('categories', 'company', 'fiscalYear', 'tasks');;
 
 
+        if ($activeFiscalYearId) {
+            $query->where('fiscal_year_id', $activeFiscalYearId);
+        }
+        if (Auth::check()) {
+            $query->where('company_id', Auth::user()->company_id);
+        }
+
+
+        $events = $query->paginate(10);
         return EventResource::collection($events);
     }
 

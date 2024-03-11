@@ -17,8 +17,10 @@ class FiscalYearResource extends JsonResource
         return [
             'id' => $this->id,
             'year' => $this->year,
-            'start_date' => $this->startDate,
-            'end_date' => $this->endDate,
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+            'ad_startDate' => $this->ad_startDate,
+            'ad_endDate' => $this->ad_endDate,
             'order' => $this->order,
             'status' => $this->status,
             'created_by' => $this->created_by,
