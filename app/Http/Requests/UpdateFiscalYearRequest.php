@@ -24,9 +24,11 @@ class UpdateFiscalYearRequest extends FormRequest
         return [
             //
             'year' => 'required',
-            'startDate' => 'required',
-            'endDate' => 'required',
+            // 'startDate' => 'required',
+            // 'endDate' => 'required',
             'status' => 'required',
+            // 'ad_endDate' => 'required',
+            // 'ad_startDate' => 'required',
         ];
     }
 }

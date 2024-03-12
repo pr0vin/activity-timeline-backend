@@ -29,14 +29,16 @@ class FiscalYearController extends Controller
         //
         $data = $request->validated();
 
-        // return $data;
+
         if ($data['status'] == true) {
             FiscalYear::where('status', true)->update(['status' => false]);
         }
 
         $fiscalyear = FiscalYear::create($data);
+        $newfy = new FiscalYearResource($fiscalyear);
 
         return response()->json([
+            'fiscalYear' => $newfy,
             'message' => "Successfully created"
         ]);
     }
@@ -61,6 +63,7 @@ class FiscalYearController extends Controller
 
         $data = $request->Validated();
 
+        // return $data;
         if ($data['status'] == true) {
             FiscalYear::where('status', true)->update(['status' => false]);
         }

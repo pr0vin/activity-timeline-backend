@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             //
-            $table->timestamp('ad_date')->nullable();
+            $table->date('ad_date')->nullable();
         });
     }
 

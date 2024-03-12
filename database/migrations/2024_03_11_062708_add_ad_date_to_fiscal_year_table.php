@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('fiscal_years', function (Blueprint $table) {
             //
-            $table->timestamp('ad_startDate')->nullable();
-            $table->timestamp('ad_endDate')->nullable();
+            $table->date('ad_startDate')->nullable();
+            $table->date('ad_endDate')->nullable();
         });
     }
 
