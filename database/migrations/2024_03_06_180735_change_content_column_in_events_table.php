@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             //
+            $table->text('title')->change();
             $table->text('content')->change();
         });
     }
@@ -24,6 +25,8 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             //
+            $table->string('title')->change();
+
             $table->string('content')->change();
         });
     }
