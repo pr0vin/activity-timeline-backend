@@ -34,6 +34,7 @@ class FiscalYearController extends Controller
             FiscalYear::where('status', true)->update(['status' => false]);
         }
 
+
         $fiscalyear = FiscalYear::create($data);
         $newfy = new FiscalYearResource($fiscalyear);
 
